@@ -337,8 +337,13 @@ function ProductList({ onHomeClick }) {
                                         <div className="product-description">{plant.description}</div>
                                         <div className="product-cost">{plant.cost}</div>
                                         {/* manipula/maneja Agregar plant al cart */}
-                                        <button className="product-button" onClick={() => handleAddToCart(plant)}>
-                                            Agregar al carrito
+                                        <button
+                                            className="product-button"
+                                            onClick={() => handleAddToCart(plant)}
+                                            disabled={addedToCart[plant.name]}
+                                            style={addedToCart[plant.name] ? { backgroundColor: '#ccc', color: '#666', cursor: 'not-allowed' } : {}}
+                                        >
+                                            {addedToCart[plant.name] ? 'Agregado' : 'Agregar al carrito'}
                                         </button>
                                     </div>
                                 ))}
