@@ -4,13 +4,13 @@ import React, { useState, useEffect } from 'react';
 import './ProductList.css';
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-    const [addedToCart, setAddedToCart] = useState({});
     const dispatch = useDispatch();
+    const cartItems = useSelector((state) => state.cart.items);
 
     const plantsArray = [
         {
@@ -262,12 +262,6 @@ function ProductList({ onHomeClick }) {
 
     const handleAddToCart = (product) => {
         dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
-
-        setAddedToCart((prevState) => ({
-            // Update the local state to reflect that the product has been added
-            ...prevState, // Spread the previous state to retain existing entries
-            [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
-        }));
     };
 
     return (
@@ -340,10 +334,10 @@ function ProductList({ onHomeClick }) {
                                         <button
                                             className="product-button"
                                             onClick={() => handleAddToCart(plant)}
-                                            disabled={addedToCart[plant.name]}
-                                            style={addedToCart[plant.name] ? { backgroundColor: '#ccc', color: '#666', cursor: 'not-allowed' } : {}}
+                                            disabled={cartItems.some((item) => item.name === plant.name)}
+                                            style={cartItems.some((item) => item.name === plant.name) ? { backgroundColor: '#ccc', color: '#666', cursor: 'not-allowed' } : {}}
                                         >
-                                            {addedToCart[plant.name] ? 'Agregado' : 'Agregar al carrito'}
+                                            {cartItems.some((item) => item.name === plant.name) ? 'Agregado' : 'Agregar al carrito'}
                                         </button>
                                     </div>
                                 ))}

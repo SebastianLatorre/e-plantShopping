@@ -36,6 +36,13 @@ const CartItem = ({ onContinueShopping }) => {
 
     const handleRemove = (item) => {
         dispatch(removeItem(item.name));
+        // Actualiza el estado local en ProductList para mostrar el botón correctamente
+        if (typeof window !== 'undefined' && window.setAddedToCart) {
+            window.setAddedToCart((prevState) => ({
+                ...prevState,
+                [item.name]: false,
+            }));
+        }
     };
 
     // Calculate total cost based on quantity for an item
